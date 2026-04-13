@@ -41,6 +41,68 @@ Do NOT use for token prices -- use dex_get_swap_quote instead. Do NOT use for wa
         },
         required: ["address"],
       },
+      outputSchema: {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string",
+              "description": "Token contract address"
+            },
+            "chain": {
+              "type": "string",
+              "description": "Blockchain"
+            },
+            "chainId": {
+              "type": "number",
+              "description": "Chain ID"
+            },
+            "found": {
+              "type": "boolean",
+              "description": "Whether token was found"
+            },
+            "token_name": {
+              "type": "string",
+              "description": "Token name"
+            },
+            "is_honeypot": {
+              "type": "boolean",
+              "description": "Whether token is a honeypot"
+            },
+            "is_mintable": {
+              "type": "boolean",
+              "description": "Whether token can be minted"
+            },
+            "is_proxy": {
+              "type": "boolean",
+              "description": "Whether contract is a proxy"
+            },
+            "buy_tax": {
+              "type": "string",
+              "description": "Buy tax percentage"
+            },
+            "sell_tax": {
+              "type": "string",
+              "description": "Sell tax percentage"
+            },
+            "holder_count": {
+              "type": "string",
+              "description": "Number of holders"
+            },
+            "total_supply": {
+              "type": "string",
+              "description": "Total supply"
+            },
+            "risk_score": {
+              "type": "number",
+              "description": "Risk score 0-100"
+            }
+          },
+          "required": [
+            "address",
+            "chain",
+            "found"
+          ]
+        },
     },
   ],
 };
