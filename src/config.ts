@@ -3,7 +3,7 @@ import type { ApiConfig } from "./shared";
 export const API_CONFIG: ApiConfig = {
   name: "token-safety",
   slug: "token-safety",
-  description: "Check if a token is safe to trade — honeypot, tax, proxy, blacklist, ownership.",
+  description: "Token contract safety scanner -- honeypot, tax, proxy, blacklist, ownership. Rug-pull protection for agents.",
   version: "1.0.0",
   routes: [
     {
@@ -12,7 +12,24 @@ export const API_CONFIG: ApiConfig = {
       price: "$0.003",
       description: "Check token contract safety and risk score",
       toolName: "token_check_safety",
-      toolDescription: "Use this when you need to check if a token is safe before buying or interacting. Returns: honeypot status, ownership renounced, proxy contract risk, max TX limits, buy/sell tax, liquidity locked status, blacklist function, holder count. Supports Base and Ethereum (EVM). Do NOT use for token prices — use dex_get_swap_quote. Do NOT use for wallet balance — use wallet_get_portfolio.",
+      toolDescription: `Use this when you need to check if a token is safe before buying or interacting with it. Returns a comprehensive safety report in JSON.
+
+1. isHoneypot: whether the token traps buyers (cannot sell)
+2. ownershipRenounced: whether the contract owner has renounced control
+3. isProxy: whether the contract is upgradeable (proxy risk)
+4. buyTax: percentage tax on buy transactions
+5. sellTax: percentage tax on sell transactions
+6. maxTxPercent: maximum transaction size as percent of supply
+7. liquidityLocked: whether liquidity is locked
+8. hasBlacklist: whether contract has a blacklist function
+9. holderCount: total number of token holders
+10. riskScore: overall risk score (0=safe, 100=dangerous)
+
+Example output: {"isHoneypot":false,"ownershipRenounced":true,"isProxy":false,"buyTax":0,"sellTax":0,"maxTxPercent":100,"liquidityLocked":true,"hasBlacklist":false,"holderCount":15420,"riskScore":12}
+
+Use this BEFORE buying any new or unknown token. Essential for rug-pull protection and due diligence.
+
+Do NOT use for token prices -- use dex_get_swap_quote instead. Do NOT use for wallet balance -- use wallet_get_portfolio instead. Do NOT use for holder distribution -- use token_get_holder_analysis instead.`,
       inputSchema: {
         type: "object",
         properties: {
