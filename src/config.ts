@@ -9,7 +9,7 @@ export const API_CONFIG: ApiConfig = {
     {
       method: "GET",
       path: "/api/check",
-      price: "$0.003",
+      price: "$0.008",
       description: "Check token contract safety and risk score",
       toolName: "token_check_safety",
       toolDescription: `Use this when you need to check if a token is safe before buying or interacting with it. Returns a comprehensive safety report in JSON.
