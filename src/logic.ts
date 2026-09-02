@@ -85,10 +85,8 @@ function getRiskLevel(score: number): "safe" | "caution" | "danger" {
 }
 
 export function registerRoutes(app: Hono) {
-  app.get("/api/check", async (c) => {
+  async function handleCheck(c: any, address: string | undefined, chain: string) {
     await tryRequirePayment(0.003);
-    const address = c.req.query("address");
-    const chain = c.req.query("chain") || "ethereum";
 
     if (!address) {
       return c.json({ error: "Missing required parameter: address (token contract address)" }, 400);
@@ -180,5 +178,15 @@ export function registerRoutes(app: Hono) {
     cache.set(cacheKey, { data: response, timestamp: Date.now() });
 
     return c.json(response);
+  }
+
+  app.get("/api/check", async (c) =>
+    handleCheck(c, c.req.query("address"), c.req.query("chain") || "ethereum"),
+  );
+
+  // POST mirror: Bazaar (CDP) only reliably indexes POST payments.
+  app.post("/api/check", async (c) => {
+    const body = await c.req.json().catch(() => ({}) as any);
+    return handleCheck(c, body.address, body.chain || "ethereum");
   });
 }
